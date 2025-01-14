@@ -2,6 +2,7 @@ package com.example.s3.apicontroller.aws;
 
 import com.example.s3.service.aws.AwsS3Service;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/file")
+@Slf4j
 public class AmazonS3Controller {
 
     private final AwsS3Service awsS3Service;
@@ -47,6 +49,7 @@ public class AmazonS3Controller {
 
     @DeleteMapping
     public ResponseEntity<String> deleteFile(@RequestParam String fileName){
+        // +) 삭제 시에(fileName) .png 이렇게 이름 + 확장자까지 url 파리미터에 넣어줘야함
         awsS3Service.deleteFile(fileName);
         return ResponseEntity.ok(fileName);
     }

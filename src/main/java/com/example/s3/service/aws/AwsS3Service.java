@@ -1,6 +1,8 @@
 package com.example.s3.service.aws;
 
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
@@ -125,8 +127,17 @@ public class AwsS3Service {
 
 
     public void deleteFile(String fileName){
-        // bucket : 삭제할 s3버캣 이름 / fileName : s3버캣에 저장된 파일명
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
-        System.out.println(bucket);
+        // bucket : 삭제할 s3버캣 이름 / fileName : s3버캣에 저장된 파일
+        try {
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+            System.out.println("File " + fileName + " has been deleted from bucket " + bucket);
+        } catch (AmazonServiceException e) {
+            System.err.println("AmazonServiceException: " + e.getMessage());
+        } catch (AmazonClientException e) {
+            System.err.println("AmazonClientException: " + e.getMessage());
+        }
+        //amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+        //System.out.println(bucket);
+
     }
 }
